@@ -15,7 +15,7 @@ Build a minimal FastAPI application that serves dummy detection data via a REST 
 pip install fastapi uvicorn pydantic
 ```
 
-### ▶ 2. Run server
+### 2. Run server
 ```bash
 python main.py
 ```
