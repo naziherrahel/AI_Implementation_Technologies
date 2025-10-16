@@ -1,0 +1,40 @@
+# -----------------------------------------------
+# 🧱 docker-compose.yml
+# Purpose: Define how multiple containers (our app + database)
+# will run together as one environment.
+# -----------------------------------------------
+
+
+services:
+  # 🗄️ PostgreSQL Database Service
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres          # Database username
+      POSTGRES_PASSWORD: admin         # Database password
+      POSTGRES_DB: dust_detection      # Database name
+    ports:
+      - "5432:5432"                    # Expose PostgreSQL to host (for debugging)
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Persistent storage for DB data
+
+  # 🚀 FastAPI Application Service
+  app:
+    build: .                           # Build the image using Dockerfile in the current directory
+    container_name: fastapi_dust_app
+    depends_on:
+      - db                             # Ensure the database starts first
+    environment:
+      DB_HOST: db                      # Hostname (matches service name)
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: admin
+      DB_NAME: dust_detection
+    ports:
+      - "8000:8000"                    # Expose FastAPI app on localhost:8000
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# 💾 Define Docker volume for database persistence
+volumes:
+  pgdata:
