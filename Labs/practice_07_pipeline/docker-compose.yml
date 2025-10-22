@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: detection_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: yolo_fastapi_app
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=admin
+      - DB_NAME=detection_db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./detected_frames:/app/detected_frames
+      - ./sample_video.mp4:/app/sample_video.mp4
+    # Uncomment below line only if running on Linux and want webcam access
+    # devices:
+    #   - "/dev/video0:/dev/video0"
+
+volumes:
+  pgdata:
