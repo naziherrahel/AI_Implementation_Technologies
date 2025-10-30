@@ -51,6 +51,7 @@ cd ~/detection_app
 ```bash
 # Example Windows (Git Bash):
 scp -i ~/.ssh/id_ed25519 -r "/c/Users/<you>/Desktop/edu/practice_07_pipeline" root@<server_public_ip>:/root/detection_app
+scp -i ~/.ssh/id_ed25519 -r "practice_07_pipeline" root@46.148.228.213:/root/detection_api
 
 # Example Linux/macOS:
 scp -i ~/.ssh/id_ed25519 -r ~/path/to/practice_07_pipeline root@<server_public_ip>:/root/detection_app
